@@ -40,7 +40,7 @@ export const EXAMPLE = {
     },
     consultant: {
       name: "Marco Bianchi",
-      role: "Consulente Assicurativo",
+      role: "Consulente assicurativo",
     },
     slogan: "Proteggere | Crescere | Investire",
   },

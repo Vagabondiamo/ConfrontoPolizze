@@ -63,7 +63,7 @@ export const THEMES = [
     id: "cielo",
     name: "Cielo & Cobalto",
     swatch: ["#0B3D91", "#4DA8FF", "#1565C0"],
-    center: { bg: "#0B3D91", text: "#E8F1FF", accent: "#4DA8FF", muted: "#7AAEE8", line: "#1A52B5" },
+    center: { bg: "#FFFFFF", text: "#0032A0", accent: "#0032A0", muted: "#0032A0", line: "#1A52B5" },
     panelBg: "#FFFFFF",
     bodyText: "#0D1F3C",
     boxBg: "#EBF3FF",
