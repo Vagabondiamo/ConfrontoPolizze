@@ -42,7 +42,7 @@ export const EXAMPLE = {
       name: "Marco Bianchi",
       role: "Consulente Assicurativo",
     },
-    slogan: "Protegere | Crescere | Investire",
+    slogan: "Proteggere | Crescere | Investire",
   },
   policyB: {
     name: "Sicura Vita Premium",
