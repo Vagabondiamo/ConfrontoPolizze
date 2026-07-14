@@ -1,0 +1,51 @@
+name: 'publish'
+
+on:
+  push:
+    tags:
+      - 'v*' # Si attiva quando fai il push di un tag di versione (es. v0.1.0)
+  workflow_dispatch: # Permette di avviare la compilazione manualmente dal sito di GitHub
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write # Necessario per creare la release e caricare i file su GitHub
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-22.04, windows-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          # Compila sia per Intel (x86_64) che per Apple Silicon (M1/M2/M3) su Mac
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Install Linux dependencies (Ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build and release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: v__VERSION__ # Sostituito automaticamente con la versione definita nel progetto
+          releaseName: 'Confronto Polizze v__VERSION__'
+          releaseBody: 'Scarica l\'installatore per il tuo sistema operativo dall\'elenco degli asset qui sotto.'
+          releaseDraft: true
+          prerelease: false
