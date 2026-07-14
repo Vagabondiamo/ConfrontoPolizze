@@ -8,6 +8,7 @@ on:
 
 jobs:
   publish-tauri:
+    name: Build (${{ matrix.platform == 'ubuntu-22.04' && 'Linux' || matrix.platform == 'macos-latest' && 'macOS' || 'Windows' }})
     permissions:
       contents: write # Necessario per creare la release e caricare i file su GitHub
     strategy:
@@ -30,7 +31,7 @@ jobs:
           # Compila sia per Intel (x86_64) che per Apple Silicon (M1/M2/M3) su Mac
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      - name: Install Linux dependencies (Ubuntu only)
+      - name: Install Linux dependencies
         if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
