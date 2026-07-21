@@ -7,14 +7,15 @@
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      body {
+      html, body {
+        width: 520px;
+        height: 520px;
+        overflow: hidden;
         background: #0E2D50;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100vh;
-        overflow: hidden;
         font-family: 'Segoe UI', system-ui, sans-serif;
         user-select: none;
       }
@@ -23,26 +24,27 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 28px;
-        animation: fadeIn 0.6s ease-out;
+        gap: 24px;
+        animation: fadeIn 0.5s ease-out;
       }
 
       @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(12px); }
+        from { opacity: 0; transform: translateY(14px); }
         to   { opacity: 1; transform: translateY(0); }
       }
 
       .logo {
-        width: 110px;
-        height: 110px;
-        border-radius: 24px;
-        box-shadow: 0 8px 40px rgba(0,0,0,0.45);
-        object-fit: cover;
+        width: 160px;
+        height: 160px;
+        border-radius: 32px;
+        box-shadow: 0 12px 48px rgba(0,0,0,0.5);
+        object-fit: contain;
+        background: #fff;
       }
 
       .app-name {
         color: #ffffff;
-        font-size: 22px;
+        font-size: 26px;
         font-weight: 700;
         letter-spacing: 0.04em;
       }
@@ -54,34 +56,32 @@
       .subtitle {
         color: rgba(255,255,255,0.45);
         font-size: 12px;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        margin-top: -18px;
+        margin-top: -14px;
       }
 
       .spinner-wrap {
-        margin-top: 8px;
+        margin-top: 6px;
       }
     </style>
 
-    <!-- ldrs web component -->
     <script type="module">
-      import { lineSpinner } from 'https://cdn.jsdelivr.net/npm/ldrs/dist/auto/lineSpinner.js';
-      lineSpinner.register();
+      import { dotSpinner } from 'https://cdn.jsdelivr.net/npm/ldrs/dist/auto/dotSpinner.js';
+      dotSpinner.register();
     </script>
   </head>
   <body>
     <div class="logo-wrapper">
-      <img class="logo" src="/splash-logo.jpg" alt="Futuria Logo" />
+      <img class="logo" src="/splash-logo.png" alt="Futuria Logo" />
       <div class="app-name">Futuria <span>Brochure</span></div>
       <div class="subtitle">Confronto Polizze</div>
       <div class="spinner-wrap">
-        <l-line-spinner
-          size="36"
-          stroke="3"
-          speed="1"
+        <l-dot-spinner
+          size="40"
+          speed="0.9"
           color="#C2942E"
-        ></l-line-spinner>
+        ></l-dot-spinner>
       </div>
     </div>
   </body>

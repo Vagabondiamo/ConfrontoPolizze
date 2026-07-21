@@ -30,24 +30,6 @@ function App() {
   const isTauri = !!window.__TAURI_INTERNALS__;
 
   useEffect(() => {
-    if (isTauri) {
-      import("@tauri-apps/api/window").then(({ Window }) => {
-        // Mostra lo splash screen per 1.5 secondi prima di mostrare l'app
-        setTimeout(async () => {
-          try {
-            const splashscreen = Window.getByLabel("splashscreen");
-            const mainWindow = Window.getByLabel("main");
-            if (mainWindow) await mainWindow.show();
-            if (splashscreen) await splashscreen.close();
-          } catch (e) {
-            console.error("Splashscreen close error:", e);
-          }
-        }, 1500);
-      }).catch(console.error);
-    }
-  }, [isTauri]);
-
-  useEffect(() => {
     fetch("https://api.github.com/repos/Vagabondiamo/ConfrontoPolizze/releases/latest")
       .then(res => res.json())
       .then(data => {

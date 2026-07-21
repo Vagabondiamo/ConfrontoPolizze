@@ -14,18 +14,21 @@
       {
         "title": "Confronto Polizze",
         "label": "main",
-        "width": 800,
-        "height": 600,
+        "width": 1280,
+        "height": 800,
+        "minWidth": 900,
+        "minHeight": 650,
         "resizable": true,
         "fullscreen": false,
-        "visible": false
+        "visible": false,
+        "center": true
       },
       {
         "title": "",
         "label": "splashscreen",
         "url": "/splashscreen.html",
-        "width": 400,
-        "height": 400,
+        "width": 520,
+        "height": 520,
         "resizable": false,
         "fullscreen": false,
         "decorations": false,
