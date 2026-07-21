@@ -14,21 +14,20 @@ pub fn run() {
         )?;
       }
 
-      // Gestione splash screen: chiude lo splash e mostra la finestra principale dopo 1.5s
+      // Splash screen: usa un thread OS separato per attendere e poi
+      // mostrare la finestra principale e chiudere lo splash
       let splashscreen = app.get_webview_window("splashscreen");
       let main_window = app.get_webview_window("main");
 
-      if splashscreen.is_some() || main_window.is_some() {
-        tauri::async_runtime::spawn(async move {
-          std::thread::sleep(std::time::Duration::from_millis(1500));
-          if let Some(main) = main_window {
-            main.show().unwrap_or_default();
-          }
-          if let Some(splash) = splashscreen {
-            splash.close().unwrap_or_default();
-          }
-        });
-      }
+      std::thread::spawn(move || {
+        std::thread::sleep(std::time::Duration::from_millis(1500));
+        if let Some(main) = main_window {
+          let _ = main.show();
+        }
+        if let Some(splash) = splashscreen {
+          let _ = splash.close();
+        }
+      });
 
       Ok(())
     })
