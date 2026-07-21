@@ -15,22 +15,8 @@ pub fn run() {
             .build(),
         )?;
       }
-
-      // Splash screen: clona l'AppHandle (è Send) e recupera le finestre dall'interno del thread
-      let handle = app.handle().clone();
-      std::thread::spawn(move || {
-        std::thread::sleep(std::time::Duration::from_millis(1500));
-        if let Some(main) = handle.get_webview_window("main") {
-          let _ = main.show();
-        }
-        if let Some(splash) = handle.get_webview_window("splashscreen") {
-          let _ = splash.close();
-        }
-      });
-
       Ok(())
     })
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
-
