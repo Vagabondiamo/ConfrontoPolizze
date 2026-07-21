@@ -48,8 +48,7 @@
       },
       "appimage": {
         "bundleMediaFramework": true
-      },
-      "desktopTemplate": null
+      }
     },
     "android": {
       "debugApplicationIdSuffix": ".debug"
