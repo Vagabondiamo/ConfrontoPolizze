@@ -1,3 +1,5 @@
+use tauri::Manager;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   tauri::Builder::default()
@@ -14,17 +16,14 @@ pub fn run() {
         )?;
       }
 
-      // Splash screen: usa un thread OS separato per attendere e poi
-      // mostrare la finestra principale e chiudere lo splash
-      let splashscreen = app.get_webview_window("splashscreen");
-      let main_window = app.get_webview_window("main");
-
+      // Splash screen: clona l'AppHandle (è Send) e recupera le finestre dall'interno del thread
+      let handle = app.handle().clone();
       std::thread::spawn(move || {
         std::thread::sleep(std::time::Duration::from_millis(1500));
-        if let Some(main) = main_window {
+        if let Some(main) = handle.get_webview_window("main") {
           let _ = main.show();
         }
-        if let Some(splash) = splashscreen {
+        if let Some(splash) = handle.get_webview_window("splashscreen") {
           let _ = splash.close();
         }
       });
@@ -34,3 +33,4 @@ pub fn run() {
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
+
