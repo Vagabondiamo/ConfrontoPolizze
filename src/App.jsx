@@ -19,12 +19,12 @@ function App() {
   const [data, setData] = useState(EMPTY);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("futuria-dark") === "true");
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
-  const [latestVersion, setLatestVersion] = useState("v0.1.0");
-  const [winDownloadUrl, setWinDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.0/confronto-polizze_0.1.0_x64-setup.exe");
-  const [macDownloadUrl, setMacDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.0/confronto-polizze_0.1.0_aarch64.dmg");
-  const [linuxDebUrl, setLinuxDebUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.0/confronto-polizze_0.1.0_amd64.deb");
-  const [linuxRpmUrl, setLinuxRpmUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.0/confronto-polizze-0.1.0-1.x86_64.rpm");
-  const [linuxAppImageUrl, setLinuxAppImageUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.0/confronto-polizze_0.1.0_amd64.AppImage");
+  const [latestVersion, setLatestVersion] = useState("v0.1.6");
+  const [winDownloadUrl, setWinDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.6/confronto-polizze_0.1.6_x64-setup.exe");
+  const [macDownloadUrl, setMacDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.6/confronto-polizze_0.1.6_aarch64.dmg");
+  const [linuxDebUrl, setLinuxDebUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.6/confronto-polizze_0.1.6_amd64.deb");
+  const [linuxRpmUrl, setLinuxRpmUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.6/confronto-polizze-0.1.6-1.x86_64.rpm");
+  const [linuxAppImageUrl, setLinuxAppImageUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.6/confronto-polizze_0.1.6_amd64.AppImage");
 
   const isDebian = navigator.userAgent.toLowerCase().includes("debian") || navigator.userAgent.toLowerCase().includes("ubuntu");
   const isTauri = !!window.__TAURI_INTERNALS__;

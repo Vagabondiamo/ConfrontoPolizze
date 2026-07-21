@@ -54,4 +54,4 @@ jobs:
           prerelease: false
           # Genera automaticamente latest.json per l'auto-update
           updaterJsonPreferNsis: true
-          includeUpdaterJson: true
+          uploadUpdaterJson: true
