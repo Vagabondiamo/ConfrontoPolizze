@@ -40,5 +40,14 @@
     "android": {
       "debugApplicationIdSuffix": ".debug"
     }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDNGMUI5OUI3MkYxRTY2MTIKUldRU1poNHZ0NWtiUCtScFkydUxDckJhZzdianRyQWMxUzZQOEhmWTZUWm1Md1I3L0U2SzdqTUEK",
+      "endpoints": [
+        "https://github.com/Vagabondiamo/ConfrontoPolizze/releases/latest/download/latest.json"
+      ],
+      "dialog": false
+    }
   }
 }

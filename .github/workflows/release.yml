@@ -3,14 +3,14 @@ name: 'publish'
 on:
   push:
     tags:
-      - 'v*' # Si attiva quando fai il push di un tag di versione (es. v0.1.0)
-  workflow_dispatch: # Permette di avviare la compilazione manualmente dal sito di GitHub
+      - 'v*'
+  workflow_dispatch:
 
 jobs:
   publish-tauri:
     name: Build (${{ matrix.platform == 'ubuntu-22.04' && 'Linux' || matrix.platform == 'macos-latest' && 'macOS' || 'Windows' }})
     permissions:
-      contents: write # Necessario per creare la release e caricare i file su GitHub
+      contents: write
     strategy:
       fail-fast: false
       matrix:
@@ -28,7 +28,6 @@ jobs:
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
-          # Compila sia per Intel (x86_64) che per Apple Silicon (M1/M2/M3) su Mac
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: Install Linux dependencies
@@ -44,9 +43,15 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Chiave privata per firmare gli aggiornamenti (aggiunta come secret su GitHub)
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           tagName: ${{ github.ref_name }}
           releaseName: 'Confronto Polizze ${{ github.ref_name }}'
           releaseBody: "Scarica l'installatore per il tuo sistema operativo dall'elenco degli asset qui sotto."
           releaseDraft: true
           prerelease: false
+          # Genera automaticamente latest.json per l'auto-update
+          updaterJsonPreferNsis: true
+          includeUpdaterJson: true

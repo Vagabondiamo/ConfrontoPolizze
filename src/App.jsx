@@ -6,6 +6,7 @@ import { THEMES } from "@/brochure/themes";
 import { EMPTY } from "@/brochure/defaults";
 import { generateBrochurePdf } from "@/brochure/generateBrochurePdf";
 import { Button } from "@/components/ui/button";
+import { UpdateChecker } from "@/components/UpdateChecker";
 import { Download, FileText, Palette, Monitor, Apple, ChevronDown, Moon, Sun } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
@@ -103,7 +104,8 @@ function App() {
               )}
             </div>
 
-            {/* Scarica PDF */}
+            {/* Update checker + Scarica PDF */}
+            <UpdateChecker />
             <Button
               data-testid="download-pdf-btn"
               onClick={handleDownload}
