@@ -62,7 +62,7 @@ const DEFAULT_PRODUCTS = [
 
 const Field = ({ label, children }) => (
   <div className="space-y-1.5">
-    <Label className="text-[10px] font-bold uppercase tracking-wide text-neutral-500">{label}</Label>
+    <Label className="text-[10px] font-bold uppercase tracking-wide text-neutral-500 dark:text-neutral-400">{label}</Label>
     {children}
   </div>
 );
@@ -106,11 +106,11 @@ const ListEditor = ({ label, items, ph, onChange, testid }) => {
 const PolicyForm = ({ side, data, patch, ex, products, onNewProductClick }) => (
   <div className="space-y-5">
     {/* Product selection and modal trigger */}
-    <div className="flex items-center gap-3 p-3 bg-[#FAF8F5] rounded-lg border border-[#E9E4D9]">
+    <div className="flex items-center gap-3 p-3 bg-[#FAF8F5] dark:bg-neutral-800 rounded-lg border border-[#E9E4D9] dark:border-neutral-700">
       <div className="flex-1 space-y-1">
         <Label className="text-[10px] font-bold text-neutral-500 uppercase">Libreria Prodotti</Label>
         <select
-          className="w-full bg-white border border-[#E9E4D9] rounded-md p-1.5 text-xs text-neutral-700 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+          className="w-full bg-white dark:bg-neutral-900 dark:text-neutral-100 border border-[#E9E4D9] dark:border-neutral-700 rounded-md p-1.5 text-xs text-neutral-700 focus:outline-none focus:ring-1 focus:ring-neutral-400"
           onChange={(e) => {
             const prod = products.find((p) => p.name === e.target.value);
             if (prod) {
@@ -258,7 +258,7 @@ export const Editor = ({ data, setData }) => {
           <div className="space-y-5">
             <Field label="Logo aziendale">
               {data.center.logo ? (
-                <div className="flex items-center gap-3 rounded-md border border-neutral-200 bg-neutral-50 p-2">
+                <div className="flex items-center gap-3 rounded-md border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 p-2">
                   <img src={data.center.logo} alt="logo" className="h-10 max-w-[140px] object-contain" />
                   <Button type="button" variant="ghost" size="sm" className="ml-auto gap-1.5 text-xs text-red-500" data-testid="logo-remove" onClick={() => patchC({ logo: null })}>
                     <X className="h-3.5 w-3.5" /> Rimuovi

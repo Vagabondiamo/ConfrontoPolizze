@@ -357,7 +357,7 @@ export function generateBrochurePdf(rawData, { download = true } = {}) {
 
   if (download) {
     doc.save("brochure-futuria.pdf");
-    return null;
+    return doc;
   }
-  return doc.output("datauristring");
+  return doc;
 }
