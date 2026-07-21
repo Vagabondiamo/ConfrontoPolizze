@@ -45,8 +45,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v__VERSION__ # Sostituito automaticamente con la versione definita nel progetto
-          releaseName: 'Confronto Polizze v__VERSION__'
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Confronto Polizze ${{ github.ref_name }}'
           releaseBody: "Scarica l'installatore per il tuo sistema operativo dall'elenco degli asset qui sotto."
           releaseDraft: true
           prerelease: false
