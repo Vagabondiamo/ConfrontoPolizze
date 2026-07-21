@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "confronto-polizze",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "identifier": "com.confrontopolizze.app",
   "build": {
     "frontendDist": "../dist",
@@ -32,7 +32,7 @@
     "active": true,
     "targets": "all",
     "publisher": "Futuria Assicurazioni",
-    "shortDescription": "Confronto Polizze",
+    "shortDescription": "Confronto Polizze Assicurative",
     "longDescription": "Applicazione per generare brochure comparative tra diverse polizze assicurative.",
     "category": "Business",
     "icon": [
@@ -42,6 +42,15 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "linux": {
+      "deb": {
+        "depends": []
+      },
+      "appimage": {
+        "bundleMediaFramework": true
+      },
+      "desktopTemplate": null
+    },
     "android": {
       "debugApplicationIdSuffix": ".debug"
     }
