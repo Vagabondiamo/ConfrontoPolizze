@@ -1,6 +1,6 @@
 {
   "name": "confronto-polizze",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -17,6 +17,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "core-js": "^3.49.0",
+    "html-to-image": "^1.11.13",
     "jspdf": "^4.2.1",
     "ldrs": "^1.1.9",
     "lucide-react": "^0.383.0",

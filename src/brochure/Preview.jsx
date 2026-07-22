@@ -30,7 +30,7 @@ const PolicyPanel = ({ p, colors, panel, mirror, tag }) => {
           <ul className="mt-[3%] space-y-[2%]">
             {p.coverages.map((c, i) => (
               <li key={i} className={`flex items-start gap-1.5 ${flexDir}`} style={{ fontSize: "clamp(4.5px,0.72vw,7.8px)" }}>
-                <span className="mt-[2.5px] inline-block shrink-0" style={{ width: 4.5, height: 4.5, background: panel.accent }} />
+                <span className="inline-block shrink-0" style={{ width: 4.5, height: 4.5, background: panel.accent, marginTop: "0.35em" }} />
                 <span className={mirror ? "text-right" : "text-left"}>{c}</span>
               </li>
             ))}
@@ -80,7 +80,7 @@ const PolicyPanel = ({ p, colors, panel, mirror, tag }) => {
           <ul className="mt-[2%] space-y-[2%]">
             {p.exclusions.map((x, i) => (
               <li key={i} className={`flex items-start gap-1.5 ${flexDir}`} style={{ fontSize: "clamp(4.5px,0.7vw,7.5px)" }}>
-                <span className="mt-[3px] inline-block shrink-0 rounded-full" style={{ width: 4.5, height: 4.5, background: colors.dot }} />
+                <span className="inline-block shrink-0 rounded-full" style={{ width: 4.5, height: 4.5, background: colors.dot, marginTop: "0.35em" }} />
                 <span className={mirror ? "text-right" : "text-left"}>{x}</span>
               </li>
             ))}
@@ -94,7 +94,7 @@ const PolicyPanel = ({ p, colors, panel, mirror, tag }) => {
             <ul className="mt-[2%] space-y-[2%]">
               {p.datiMancanti.map((d, i) => (
                 <li key={i} className={`flex items-start gap-1.5 ${flexDir}`} style={{ fontSize: "clamp(4.5px,0.7vw,7.5px)", color: "#991B1B" }}>
-                  <span className="mt-[3px] inline-block shrink-0 rounded-full bg-red-600" style={{ width: 4.5, height: 4.5 }} />
+                  <span className="inline-block shrink-0 rounded-full bg-red-600" style={{ width: 4.5, height: 4.5, marginTop: "0.35em" }} />
                   <span className={mirror ? "text-right" : "text-left"}>{d}</span>
                 </li>
               ))}
@@ -152,7 +152,7 @@ const CenterPanel = ({ c, colors }) => {
               <span className="flex shrink-0 items-center justify-center rounded-sm" style={{ width: 15, height: 15, background: cc.accent }}>
                 <Icon style={{ width: 8, height: 8, color: cc.bg }} strokeWidth={2.4} />
               </span>
-              <span>{v}</span>
+              <span className="translate-y-[0.5px]" style={{ fontSize: "clamp(5px,0.78vw,8.2px)" }}>{v}</span>
             </li>
           ))}
         </ul>
