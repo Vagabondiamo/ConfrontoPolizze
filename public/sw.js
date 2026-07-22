@@ -1,12 +1,10 @@
-const CACHE = "futuria-v1";
-const ASSETS = ["/", "/index.html"];
-
-self.addEventListener("install", e =>
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)))
-);
-
-self.addEventListener("fetch", e =>
-  e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request))
-  )
-);
+// Self-unregistering ServiceWorker to clear any stale cache causing blank pages
+self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", () => {
+  self.clients.matchAll({ type: "window" }).then(clients => {
+    for (const client of clients) {
+      client.navigate(client.url);
+    }
+  });
+  self.registration.unregister();
+});

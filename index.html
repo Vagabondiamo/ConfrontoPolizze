@@ -13,15 +13,79 @@
     </head>
     <body>
         <noscript>Devi abilitare JavaScript per eseguire questa app.</noscript>
-        <div id="root"></div>
+        <script>
+            // Se NON siamo dentro l'app desktop Tauri, nascondi la schermata di caricamento sul sito web
+            if (!window.__TAURI_INTERNALS__ && !window.__TAURI__) {
+                document.write('<style>#initial-loader-bg { display: none !important; }</style>');
+            }
+        </script>
+        <script type="module">
+            if (window.__TAURI_INTERNALS__ || window.__TAURI__) {
+                import('https://cdn.jsdelivr.net/npm/ldrs/dist/auto/dotSpinner.js').then(m => m.dotSpinner?.register?.());
+            }
+        </script>
+        <div id="root">
+            <style>
+                #initial-loader-bg {
+                    position: fixed;
+                    inset: 0;
+                    background-color: #0E2D50;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+                    z-index: 99999;
+                    user-select: none;
+                }
+                .initial-loader-logo {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 24px;
+                    box-shadow: 0 12px 36px rgba(0,0,0,0.4);
+                    object-fit: cover;
+                    margin-bottom: 20px;
+                }
+                .initial-loader-title {
+                    color: #ffffff;
+                    font-size: 24px;
+                    font-weight: 700;
+                    letter-spacing: -0.02em;
+                    margin-bottom: 4px;
+                }
+                .initial-loader-title span {
+                    color: #C2942E;
+                }
+                .initial-loader-subtitle {
+                    color: rgba(255, 255, 255, 0.5);
+                    font-size: 13px;
+                    margin-bottom: 24px;
+                    letter-spacing: 0.05em;
+                    text-transform: uppercase;
+                }
+            </style>
+            <div id="initial-loader-bg">
+                <img src="/splash-logo.jpg" alt="Futuria Logo" class="initial-loader-logo" />
+                <div class="initial-loader-title">Futuria <span>Brochure</span></div>
+                <div class="initial-loader-subtitle">Confronto Polizze</div>
+                <l-dot-spinner
+                    size="40"
+                    speed="0.9"
+                    color="#C2942E"
+                ></l-dot-spinner>
+            </div>
+        </div>
         <script type="module" src="/src/main.jsx"></script>
         <script>
-			if ("serviceWorker" in navigator) {
-			  window.addEventListener("load", () => {
-				navigator.serviceWorker.register("/sw.js");
-			   });
-		}
-	  </script>
+            // Unregister any old broken service worker that causes blank page issues
+            if ("serviceWorker" in navigator) {
+              navigator.serviceWorker.getRegistrations().then(registrations => {
+                for (let registration of registrations) {
+                  registration.unregister();
+                }
+              });
+            }
+        </script>
     </body>
 </html>
 
