@@ -19,11 +19,6 @@
                 document.write('<style>#initial-loader-bg { display: none !important; }</style>');
             }
         </script>
-        <script type="module">
-            if (window.__TAURI_INTERNALS__ || window.__TAURI__) {
-                import('https://cdn.jsdelivr.net/npm/ldrs/dist/auto/dotSpinner.js').then(m => m.dotSpinner?.register?.());
-            }
-        </script>
         <div id="root">
             <style>
                 #initial-loader-bg {
@@ -43,7 +38,8 @@
                     height: 120px;
                     border-radius: 24px;
                     box-shadow: 0 12px 36px rgba(0,0,0,0.4);
-                    object-fit: cover;
+                    object-fit: contain;
+                    background: #0E2D50;
                     margin-bottom: 20px;
                 }
                 .initial-loader-title {
@@ -63,19 +59,44 @@
                     letter-spacing: 0.05em;
                     text-transform: uppercase;
                 }
+                /* Fallback spinner CSS (mostrato finché ldrs non si carica) */
+                .initial-loader-spinner-fallback {
+                    width: 40px;
+                    height: 40px;
+                    border: 3px solid rgba(194, 148, 46, 0.2);
+                    border-top-color: #C2942E;
+                    border-radius: 50%;
+                    animation: _spin 0.8s linear infinite;
+                }
+                @keyframes _spin { to { transform: rotate(360deg); } }
+                /* Nascondi fallback quando l-dot-spinner è definito */
+                :defined ~ .initial-loader-spinner-fallback { display: none; }
             </style>
             <div id="initial-loader-bg">
-                <img src="/splash-logo.jpg" alt="Futuria Logo" class="initial-loader-logo" />
+                <img src="/icon-192.png" alt="Futuria Logo" class="initial-loader-logo"
+                     onerror="this.src='/logo.png'" />
                 <div class="initial-loader-title">Futuria <span>Brochure</span></div>
                 <div class="initial-loader-subtitle">Confronto Polizze</div>
-                <l-dot-spinner
-                    size="40"
-                    speed="0.9"
-                    color="#C2942E"
-                ></l-dot-spinner>
+                <l-dot-spinner size="40" speed="0.9" color="#C2942E"></l-dot-spinner>
+                <div class="initial-loader-spinner-fallback"></div>
             </div>
         </div>
         <script type="module" src="/src/main.jsx"></script>
+        <script type="module">
+            // Carica ldrs da package locale solo nell'app Tauri
+            if (window.__TAURI_INTERNALS__ || window.__TAURI__) {
+                try {
+                    const { dotSpinner } = await import('/node_modules/ldrs/dist/auto/dotSpinner.js');
+                    dotSpinner.register();
+                } catch {
+                    // fallback: prova dal CDN
+                    try {
+                        const m = await import('https://cdn.jsdelivr.net/npm/ldrs/dist/auto/dotSpinner.js');
+                        m.dotSpinner?.register?.();
+                    } catch { /* usa lo spinner CSS di fallback */ }
+                }
+            }
+        </script>
         <script>
             // Unregister any old broken service worker that causes blank page issues
             if ("serviceWorker" in navigator) {
@@ -88,4 +109,3 @@
         </script>
     </body>
 </html>
-

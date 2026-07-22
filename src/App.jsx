@@ -14,16 +14,20 @@ import appleLightIcon from "@/assets/apple-light.svg";
 import appleDarkIcon from "@/assets/apple-dark.svg";
 import tuxIcon from "@/assets/tux.svg";
 
+const DEFAULT_PDF_PATH_KEY = "futuria-pdf-default-path";
+
+
 function App() {
+  const previewRef = useRef(null);
   const [data, setData] = useState(EMPTY);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("futuria-dark") === "true");
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
-  const [latestVersion, setLatestVersion] = useState("v0.1.8");
-  const [winDownloadUrl, setWinDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.8/confronto-polizze_0.1.8_x64-setup.exe");
-  const [macDownloadUrl, setMacDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.8/confronto-polizze_0.1.8_aarch64.dmg");
-  const [linuxDebUrl, setLinuxDebUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.8/confronto-polizze_0.1.8_amd64.deb");
-  const [linuxRpmUrl, setLinuxRpmUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.8/confronto-polizze-0.1.8-1.x86_64.rpm");
-  const [linuxAppImageUrl, setLinuxAppImageUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.8/confronto-polizze_0.1.8_amd64.AppImage");
+  const [latestVersion, setLatestVersion] = useState("v0.1.9");
+  const [winDownloadUrl, setWinDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.9/confronto-polizze_0.1.9_x64-setup.exe");
+  const [macDownloadUrl, setMacDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.9/confronto-polizze_0.1.9_aarch64.dmg");
+  const [linuxDebUrl, setLinuxDebUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.9/confronto-polizze_0.1.9_amd64.deb");
+  const [linuxRpmUrl, setLinuxRpmUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.9/confronto-polizze-0.1.9-1.x86_64.rpm");
+  const [linuxAppImageUrl, setLinuxAppImageUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.9/confronto-polizze_0.1.9_amd64.AppImage");
 
   const isDebian = navigator.userAgent.toLowerCase().includes("debian") || navigator.userAgent.toLowerCase().includes("ubuntu");
   const isTauri = !!window.__TAURI_INTERNALS__;
@@ -74,14 +78,74 @@ function App() {
   }, []);
 
   const handleDownload = async () => {
+    const previewNode = previewRef.current?.querySelector('[data-testid="brochure-preview"]');
+    if (!previewNode) {
+      toast.error("Anteprima non trovata", { description: "Assicurati che il pannello di anteprima sia visibile." });
+      return;
+    }
+
+    const toastId = toast.loading("Generazione PDF in corso...", { duration: Infinity });
+
     try {
-      toast.info("Generazione PDF in corso...");
-      const { generateBrochurePdf } = await import("@/brochure/generateBrochurePdf");
-      generateBrochurePdf(data, { download: true });
-      toast.success("Brochure PDF generata", { description: "Il download è iniziato." });
+      const { generateBrochurePdfFromPreview } = await import("@/brochure/generateBrochurePdf");
+      const blob = await generateBrochurePdfFromPreview(previewNode);
+
+      if (isTauri) {
+        // === App desktop: mostra dialog di salvataggio ===
+        const { save } = await import("@tauri-apps/plugin-dialog");
+        const { writeFile } = await import("@tauri-apps/plugin-fs");
+
+        const savedDefault = localStorage.getItem(DEFAULT_PDF_PATH_KEY);
+
+        const filePath = await save({
+          title: "Salva brochure PDF",
+          defaultPath: savedDefault
+            ? savedDefault.replace(/[^\/]+$/, "brochure-futuria.pdf")
+            : "brochure-futuria.pdf",
+          filters: [{ name: "PDF", extensions: ["pdf"] }],
+        });
+
+        if (!filePath) {
+          // Utente ha annullato
+          toast.dismiss(toastId);
+          return;
+        }
+
+        // Salva il file
+        const buffer = await blob.arrayBuffer();
+        await writeFile(filePath, new Uint8Array(buffer));
+
+        // Ricorda la cartella come predefinita
+        localStorage.setItem(DEFAULT_PDF_PATH_KEY, filePath);
+
+        toast.dismiss(toastId);
+        toast.success("PDF salvato", {
+          description: `Salvato in: ${filePath}`,
+          duration: 6000,
+          action: {
+            label: "Imposta cartella predefinita",
+            onClick: () => {
+              localStorage.setItem(DEFAULT_PDF_PATH_KEY, filePath);
+              toast.info("Cartella predefinita impostata", { description: filePath });
+            },
+          },
+        });
+      } else {
+        // === Sito web: download diretto nel browser ===
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "brochure-futuria.pdf";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+        toast.dismiss(toastId);
+        toast.success("PDF scaricato", { description: "Il download è iniziato." });
+      }
     } catch (e) {
       console.error(e);
-      toast.error("Errore nella generazione del PDF");
+      toast.dismiss(toastId);
+      toast.error("Errore nella generazione del PDF", { description: String(e) });
     }
   };
 
@@ -225,7 +289,9 @@ function App() {
               <span>Anteprima · A4 orizzontale (297 × 210 mm)</span>
               <span className="hidden sm:inline">Pannelli: A · Futuria · B</span>
             </div>
-            <Preview data={data} />
+            <div ref={previewRef}>
+              <Preview data={data} />
+            </div>
           </div>
         </section>
       </main>
