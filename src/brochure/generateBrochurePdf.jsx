@@ -57,7 +57,9 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
   text(doc, p.accent);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
-  doc.text(mirror ? "POLIZZA B" : "POLIZZA A", mirror ? alignX - 3.5 : alignX, 15, { align, charSpace: 1.2 });
+  const tagText = mirror ? "POLIZZA B" : "POLIZZA A";
+  const tagCS = 1.2;
+  doc.text(tagText, mirror ? alignX - tagText.length * tagCS : alignX, 15, { align, charSpace: tagCS });
   // nome polizza
   text(doc, p.headerText);
   doc.setFont("helvetica", "bold");
@@ -75,7 +77,11 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
     text(doc, p.header);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8.5);
-    doc.text(label, mirror ? alignX - 2.5 : alignX, y, { align, charSpace: 1 });
+    const labelCS = 1.0;
+    // charSpace in jsPDF is added after each character (incl. last), so for right-align
+    // we subtract label.length * charSpace to land the last character exactly at the gold line end
+    const labelX = mirror ? alignX - label.length * labelCS : alignX;
+    doc.text(label, labelX, y, { align, charSpace: labelCS });
     stroke(doc, p.accent);
     doc.setLineWidth(0.4);
     doc.line(innerX, y + 2, innerX + innerW, y + 2);
@@ -91,9 +97,10 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
   p.coverages.forEach((c) => {
     const tw = innerW - 6;
     const lines = doc.splitTextToSize(c, tw);
-    const bx = mirror ? x0 + w - pad - 4 : innerX;
+    // For mirror: right edge of square aligns with right end of gold line (= alignX)
+    const bx = mirror ? alignX : innerX;
     fill(doc, p.accent);
-    // quadratino accento
+    // quadratino accento: per mirror, square from bx-3 to bx (bx = alignX)
     doc.rect(mirror ? bx - 3 : bx, y - 3, 3, 3, "F");
     const txX = mirror ? bx - 5 : bx + 5;
     text(doc, colors.bodyText);
@@ -124,7 +131,8 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
     text(doc, p.header);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
-    doc.text("DETTAGLI", mirror ? innerX + innerW - 4 : innerX + 4, startY + 5.5, { align });
+    const detLabel = "DETTAGLI";
+    doc.text(detLabel, mirror ? innerX + innerW - detLabel.length * 1.0 : innerX + 4, startY + 5.5, { align });
 
     let yy = startY + 11;
     details.forEach((d) => {
@@ -159,11 +167,13 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
     text(doc, p.header);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
-    doc.text("ESCLUSIONI", mirror ? innerX + innerW - 4 : innerX + 4, startY + 5.5, { align });
+    const exclLabel = "ESCLUSIONI";
+    doc.text(exclLabel, mirror ? innerX + innerW - exclLabel.length * 1.0 : innerX + 4, startY + 5.5, { align });
 
     let yy = startY + 10.5;
     wrapped.forEach((ln) => {
-      const mx = mirror ? innerX + innerW - 4 : innerX + 4;
+      // For mirror: circle right edge at innerX + innerW (= alignX)
+      const mx = mirror ? innerX + innerW : innerX + 4;
       fill(doc, colors.dot);
       doc.circle(mirror ? mx - 1.5 : mx + 1, yy - 1.2, 1.1, "F");
       const txX = mirror ? mx - 5 : mx + 5;
@@ -195,11 +205,13 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
     doc.setTextColor(185, 28, 28);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
-    doc.text("DA VERIFICARE", mirror ? innerX + innerW - 6 : innerX + 6, startY + 5.5, { align });
+    const davLabel = "DA VERIFICARE";
+    doc.text(davLabel, mirror ? innerX + innerW - 2 - davLabel.length * 1.0 : innerX + 6, startY + 5.5, { align });
 
     let yy = startY + 10.5;
     wrapped.forEach((ln) => {
-      const mx = mirror ? innerX + innerW - 6 : innerX + 6;
+      // For mirror: circle right edge at innerX + innerW - 2 (accounting for the red border rect)
+      const mx = mirror ? innerX + innerW - 2 : innerX + 6;
       doc.setFillColor(220, 38, 38);
       doc.circle(mirror ? mx - 1.5 : mx + 1, yy - 1.2, 1.1, "F");
       const txX = mirror ? mx - 5 : mx + 5;
