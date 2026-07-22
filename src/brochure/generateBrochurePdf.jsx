@@ -187,35 +187,34 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
   };
   drawExclusions();
 
-  // DA VERIFICARE
-  if (p.datiMancanti && p.datiMancanti.filter((x) => x && x.trim()).length > 0) {
+  // NOTE
+  if (p.note && p.note.filter((x) => x && x.trim()).length > 0) {
     const startY = y;
     let h = 8;
-    const wrapped = p.datiMancanti.map((it) => doc.splitTextToSize(it, innerW - 12));
+    const wrapped = p.note.map((it) => doc.splitTextToSize(it, innerW - 12));
     wrapped.forEach((ln) => (h += ln.length * 3.8 + 1.8));
 
-    doc.setFillColor(255, 241, 242);
-    doc.setDrawColor(239, 68, 68);
+    doc.setFillColor(239, 246, 255);
+    doc.setDrawColor(147, 197, 253);
     doc.setLineWidth(0.25);
     doc.roundedRect(innerX, startY, innerW, h, 1.2, 1.2, "FD");
-    doc.setFillColor(239, 68, 68);
+    doc.setFillColor(59, 130, 246);
     doc.rect(mirror ? innerX + innerW - 2 : innerX, startY, 2, h, "F");
     doc.setLineWidth(0.2);
 
-    doc.setTextColor(185, 28, 28);
+    doc.setTextColor(30, 64, 175);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
-    const davLabel = "DA VERIFICARE";
-    doc.text(davLabel, mirror ? innerX + innerW - 2 - davLabel.length * 1.0 : innerX + 6, startY + 5.5, { align });
+    const noteLabel = "NOTE";
+    doc.text(noteLabel, mirror ? innerX + innerW - 2 - noteLabel.length * 1.0 : innerX + 6, startY + 5.5, { align });
 
     let yy = startY + 10.5;
     wrapped.forEach((ln) => {
-      // For mirror: circle right edge at innerX + innerW - 2 (accounting for the red border rect)
       const mx = mirror ? innerX + innerW - 2 : innerX + 6;
-      doc.setFillColor(220, 38, 38);
+      doc.setFillColor(59, 130, 246);
       doc.circle(mirror ? mx - 1.5 : mx + 1, yy - 1.2, 1.1, "F");
       const txX = mirror ? mx - 5 : mx + 5;
-      doc.setTextColor(153, 27, 27);
+      doc.setTextColor(30, 64, 175);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
       doc.text(ln, txX, yy, { align });

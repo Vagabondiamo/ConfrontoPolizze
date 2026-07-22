@@ -88,13 +88,13 @@ const PolicyPanel = ({ p, colors, panel, mirror, tag }) => {
         </div>
 
         {/* DATI MANCANTI / DA VERIFICARE */}
-        {p.datiMancanti && p.datiMancanti.filter(x => x && x.trim()).length > 0 && (
-          <div className="rounded-sm p-[3.5%] border-l-2 border-red-500 bg-red-50/50">
-            <div className={`text-[6.5px] font-bold text-red-700 ${align}`}>DA VERIFICARE</div>
+        {p.note && p.note.filter(x => x && x.trim()).length > 0 && (
+          <div className="rounded-sm p-[3.5%] border-l-2 border-blue-400 bg-blue-50/50">
+            <div className={`text-[6.5px] font-bold text-blue-700 ${align}`}>NOTE</div>
             <ul className="mt-[2%] space-y-[2%]">
-              {p.datiMancanti.map((d, i) => (
-                <li key={i} className={`flex items-start gap-1.5 ${flexDir}`} style={{ fontSize: "clamp(4.5px,0.7vw,7.5px)", color: "#991B1B" }}>
-                  <span className="inline-block shrink-0 rounded-full bg-red-600" style={{ width: 4.5, height: 4.5, marginTop: "0.35em" }} />
+              {p.note.map((d, i) => (
+                <li key={i} className={`flex items-start gap-1.5 ${flexDir}`} style={{ fontSize: "clamp(4.5px,0.7vw,7.5px)", color: "#1e40af" }}>
+                  <span className="inline-block shrink-0 rounded-full bg-blue-500" style={{ width: 4.5, height: 4.5, marginTop: "0.35em" }} />
                   <span className={mirror ? "text-right" : "text-left"}>{d}</span>
                 </li>
               ))}

@@ -28,7 +28,7 @@ const DEFAULT_PRODUCTS = [
       "Sport estremi non dichiarati",
       "Dolo dell'assicurato",
     ],
-    datiMancanti: [
+    note: [
       "Questionario anamnestico da firmare",
     ],
   },
@@ -53,7 +53,7 @@ const DEFAULT_PRODUCTS = [
       "Patologie preesistenti non dichiarate",
       "Eventi bellici e nucleari",
     ],
-    datiMancanti: [
+    note: [
       "Copia documento d'identità",
       "Codice fiscale",
     ],
@@ -127,7 +127,7 @@ const PolicyForm = ({ side, data, patch, ex, products, onNewProductClick }) => (
                 riscatto: prod.riscatto || "",
                 coverages: prod.coverages || [""],
                 exclusions: prod.exclusions || [""],
-                datiMancanti: prod.datiMancanti || [""],
+                note: prod.note || [""],
               });
             }
           }}
@@ -198,7 +198,7 @@ const PolicyForm = ({ side, data, patch, ex, products, onNewProductClick }) => (
 
     <ListEditor label="Coperture" items={data.coverages} ph={ex.coverages} testid={`${side}-cov`} onChange={(v) => patch({ coverages: v })} />
     <ListEditor label="Esclusioni" items={data.exclusions} ph={ex.exclusions} testid={`${side}-exc`} onChange={(v) => patch({ exclusions: v })} />
-    <ListEditor label="Dati mancanti / da verificare" items={data.datiMancanti} ph={ex.datiMancanti} testid={`${side}-datimancanti`} onChange={(v) => patch({ datiMancanti: v })} />
+    <ListEditor label="Note" items={data.note} ph={ex.note} testid={`${side}-note`} onChange={(v) => patch({ note: v })} />
   </div>
 );
 

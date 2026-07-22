@@ -19,7 +19,7 @@ export const NewProductModal = ({ isOpen, onClose, onSave }) => {
     riscatto: "",
     coverages: "",
     exclusions: "",
-    datiMancanti: "",
+    note: "",
   });
 
   if (!isOpen) return null;
@@ -44,7 +44,7 @@ export const NewProductModal = ({ isOpen, onClose, onSave }) => {
       ...formData,
       coverages: splitLines(formData.coverages),
       exclusions: splitLines(formData.exclusions),
-      datiMancanti: splitLines(formData.datiMancanti),
+      note: splitLines(formData.note),
     };
 
     onSave(finalProduct);
@@ -195,12 +195,12 @@ export const NewProductModal = ({ isOpen, onClose, onSave }) => {
           </div>
 
           <div className="space-y-1">
-            <Label className="text-xs font-semibold text-neutral-500 uppercase">Dati mancanti / da verificare (uno per riga)</Label>
+            <Label className="text-xs font-semibold text-neutral-500 uppercase">Note (una per riga)</Label>
             <Textarea
               rows={3}
-              value={formData.datiMancanti}
-              onChange={(e) => handleFieldChange("datiMancanti", e.target.value)}
-              placeholder="Inserisci un dato mancante per riga..."
+              value={formData.note}
+              onChange={(e) => handleFieldChange("note", e.target.value)}
+              placeholder="Inserisci una nota per riga..."
               className="bg-white"
             />
           </div>
