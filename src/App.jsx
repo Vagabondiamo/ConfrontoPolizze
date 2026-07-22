@@ -78,17 +78,11 @@ function App() {
   }, []);
 
   const handleDownload = async () => {
-    const previewNode = previewRef.current?.querySelector('[data-testid="brochure-preview"]');
-    if (!previewNode) {
-      toast.error("Anteprima non trovata", { description: "Assicurati che il pannello di anteprima sia visibile." });
-      return;
-    }
-
     const toastId = toast.loading("Generazione PDF in corso...", { duration: Infinity });
 
     try {
-      const { generateBrochurePdfFromPreview } = await import("@/brochure/generateBrochurePdf");
-      const blob = await generateBrochurePdfFromPreview(previewNode);
+      const { generateBrochurePdf } = await import("@/brochure/generateBrochurePdf");
+      const blob = generateBrochurePdf(data);
 
       if (isTauri) {
         // === App desktop: mostra dialog di salvataggio ===
@@ -173,69 +167,6 @@ function App() {
             >
               {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
-            {/* Download app dropdown (nascosto su Tauri) */}
-            {!isTauri && (
-              <div className="relative" ref={downloadMenuRef}>
-              <Button
-                variant="outline"
-                onClick={() => setShowDownloadMenu((v) => !v)}
-                className="gap-2 border-neutral-300 text-neutral-700 hover:bg-neutral-50"
-              >
-                <Download className="h-4 w-4" /> Scarica app <ChevronDown className="h-3 w-3 ml-1" />
-              </Button>
-              {showDownloadMenu && (
-                <div className="absolute right-0 top-full mt-1 z-50 min-w-[220px] rounded-lg border border-neutral-200 bg-white shadow-lg py-1">
-                  <a
-                    href={winDownloadUrl}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
-                    onClick={() => setShowDownloadMenu(false)}
-                  >
-                    <img src={windowsIcon} alt="Windows" className="h-4 w-4 object-contain" />
-                    <div>
-                      <div className="font-medium">Windows</div>
-                      <div className="text-xs text-neutral-400">{latestVersion} · x64 Setup (.exe)</div>
-                    </div>
-                  </a>
-                  <div className="h-px bg-neutral-100 mx-3" />
-                  <a
-                    href={macDownloadUrl}
-                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors"
-                    onClick={() => setShowDownloadMenu(false)}
-                  >
-                    <img src={darkMode ? appleLightIcon : appleDarkIcon} alt="Apple" className="h-4 w-4 object-contain" />
-                    <div>
-                      <div className="font-medium">macOS</div>
-                      <div className="text-xs text-neutral-400">{latestVersion} · Apple Silicon (.dmg)</div>
-                    </div>
-                  </a>
-                  <div className="h-px bg-neutral-100 mx-3" />
-                  <div className="flex items-stretch hover:bg-neutral-50 transition-colors">
-                    <a
-                      href={isDebian ? linuxDebUrl : linuxAppImageUrl}
-                      className="flex flex-1 items-center gap-3 px-4 py-2.5 text-sm text-neutral-700"
-                      onClick={() => setShowDownloadMenu(false)}
-                    >
-                      <img src={tuxIcon} alt="Linux" className="h-4 w-4 object-contain" />
-                      <div>
-                        <div className="font-medium">Linux</div>
-                        <div className="text-xs text-neutral-400">{latestVersion} · {isDebian ? "Debian/Ubuntu (.deb)" : "Universal (.AppImage)"}</div>
-                      </div>
-                    </a>
-                    <div className="relative group flex items-center pr-2">
-                      <button className="flex h-6 w-6 items-center justify-center rounded-md text-neutral-400 hover:bg-neutral-200 hover:text-neutral-700 transition-colors" title="Altre versioni Linux">
-                        <ChevronDown className="h-4 w-4" />
-                      </button>
-                      <div className="absolute right-0 top-full mt-1 hidden group-hover:block z-50 min-w-[180px] rounded-lg border border-neutral-200 bg-white shadow-lg py-1">
-                        <a href={linuxDebUrl} className="block px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 font-medium whitespace-nowrap">.deb <span className="font-normal text-neutral-400">(Debian/Ubuntu)</span></a>
-                        <a href={linuxRpmUrl} className="block px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 font-medium whitespace-nowrap">.rpm <span className="font-normal text-neutral-400">(Fedora/RHEL)</span></a>
-                        <a href={linuxAppImageUrl} className="block px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 font-medium whitespace-nowrap">.AppImage <span className="font-normal text-neutral-400">(Universal)</span></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            )}
 
             {/* Update checker + Scarica PDF */}
             <UpdateChecker />
