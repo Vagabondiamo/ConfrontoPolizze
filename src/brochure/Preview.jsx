@@ -177,7 +177,7 @@ export const Preview = ({ data }) => {
   return (
     <div
       data-testid="brochure-preview"
-      className="mx-auto w-full overflow-hidden rounded-md shadow-2xl ring-1 ring-black/10"
+      className="mx-auto w-full overflow-hidden shadow-2xl ring-1 ring-black/10"
       style={{ aspectRatio: "297 / 210" }}
     >
       <div className="relative grid h-full grid-cols-3">

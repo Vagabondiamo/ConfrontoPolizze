@@ -22,12 +22,12 @@ function App() {
   const [data, setData] = useState(EMPTY);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("futuria-dark") === "true");
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
-  const [latestVersion, setLatestVersion] = useState("v0.1.9");
-  const [winDownloadUrl, setWinDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.9/confronto-polizze_0.1.9_x64-setup.exe");
-  const [macDownloadUrl, setMacDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.9/confronto-polizze_0.1.9_aarch64.dmg");
-  const [linuxDebUrl, setLinuxDebUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.9/confronto-polizze_0.1.9_amd64.deb");
-  const [linuxRpmUrl, setLinuxRpmUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.9/confronto-polizze-0.1.9-1.x86_64.rpm");
-  const [linuxAppImageUrl, setLinuxAppImageUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.1.9/confronto-polizze_0.1.9_amd64.AppImage");
+  const [latestVersion, setLatestVersion] = useState("v0.2.0");
+  const [winDownloadUrl, setWinDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.2.0/confronto-polizze_0.2.0_x64-setup.exe");
+  const [macDownloadUrl, setMacDownloadUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.2.0/confronto-polizze_0.2.0_aarch64.dmg");
+  const [linuxDebUrl, setLinuxDebUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.2.0/confronto-polizze_0.2.0_amd64.deb");
+  const [linuxRpmUrl, setLinuxRpmUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.2.0/confronto-polizze-0.2.0-1.x86_64.rpm");
+  const [linuxAppImageUrl, setLinuxAppImageUrl] = useState("https://github.com/Vagabondiamo/ConfrontoPolizze/releases/download/v0.2.0/confronto-polizze_0.2.0_amd64.AppImage");
 
   const isDebian = navigator.userAgent.toLowerCase().includes("debian") || navigator.userAgent.toLowerCase().includes("ubuntu");
   const isTauri = !!window.__TAURI_INTERNALS__;
@@ -82,7 +82,7 @@ function App() {
 
     try {
       const { generateBrochurePdf } = await import("@/brochure/generateBrochurePdf");
-      const blob = generateBrochurePdf(data);
+      const blob = await generateBrochurePdf(data);
 
       if (isTauri) {
         // === App desktop: mostra dialog di salvataggio ===
@@ -220,7 +220,7 @@ function App() {
               <span>Anteprima · A4 orizzontale (297 × 210 mm)</span>
               <span className="hidden sm:inline">Pannelli: A · Futuria · B</span>
             </div>
-            <div ref={previewRef}>
+            <div ref={previewRef} id="brochure-preview">
               <Preview data={data} />
             </div>
           </div>
