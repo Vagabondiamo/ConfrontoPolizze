@@ -14,7 +14,7 @@ import appleLightIcon from "@/assets/apple-light.svg";
 import appleDarkIcon from "@/assets/apple-dark.svg";
 import tuxIcon from "@/assets/tux.svg";
 
-const DEFAULT_IMG_PATH_KEY = "futuria-img-default-path";
+const DEFAULT_PDF_PATH_KEY = "futuria-pdf-default-path";
 
 
 function App() {
@@ -78,25 +78,25 @@ function App() {
   }, []);
 
   const handleDownload = async () => {
-    const toastId = toast.loading("Generazione Immagine in corso...", { duration: Infinity });
+    const toastId = toast.loading("Generazione PDF in corso...", { duration: Infinity });
 
     try {
-      const { generateBrochureImage } = await import("@/brochure/generateBrochureImage.jsx");
-      const blob = await generateBrochureImage(data);
+      const { generateBrochurePdf } = await import("@/brochure/generateBrochurePdf.jsx");
+      const blob = await generateBrochurePdf(data);
 
       if (isTauri) {
         // === App desktop: mostra dialog di salvataggio ===
         const { save } = await import("@tauri-apps/plugin-dialog");
         const { writeFile } = await import("@tauri-apps/plugin-fs");
 
-        const savedDefault = localStorage.getItem(DEFAULT_IMG_PATH_KEY);
+        const savedDefault = localStorage.getItem(DEFAULT_PDF_PATH_KEY);
 
         const filePath = await save({
-          title: "Salva brochure Immagine",
+          title: "Salva brochure PDF",
           defaultPath: savedDefault
-            ? savedDefault.replace(/[^\/]+$/, "brochure-futuria.png")
-            : "brochure-futuria.png",
-          filters: [{ name: "Immagine PNG", extensions: ["png"] }],
+            ? savedDefault.replace(/[^\/]+$/, "brochure-futuria.pdf")
+            : "brochure-futuria.pdf",
+          filters: [{ name: "PDF", extensions: ["pdf"] }],
         });
 
         if (!filePath) {
@@ -110,16 +110,16 @@ function App() {
         await writeFile(filePath, new Uint8Array(buffer));
 
         // Ricorda la cartella come predefinita
-        localStorage.setItem(DEFAULT_IMG_PATH_KEY, filePath);
+        localStorage.setItem(DEFAULT_PDF_PATH_KEY, filePath);
 
         toast.dismiss(toastId);
-        toast.success("Immagine salvata", {
+        toast.success("PDF salvato", {
           description: `Salvato in: ${filePath}`,
           duration: 6000,
           action: {
             label: "Imposta cartella predefinita",
             onClick: () => {
-              localStorage.setItem(DEFAULT_IMG_PATH_KEY, filePath);
+              localStorage.setItem(DEFAULT_PDF_PATH_KEY, filePath);
               toast.info("Cartella predefinita impostata", { description: filePath });
             },
           },
@@ -129,17 +129,17 @@ function App() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "brochure-futuria.png";
+        a.download = "brochure-futuria.pdf";
         a.click();
         setTimeout(() => URL.revokeObjectURL(url), 5000);
 
         toast.dismiss(toastId);
-        toast.success("Immagine scaricata", { description: "Il download è iniziato." });
+        toast.success("PDF scaricato", { description: "Il download è iniziato." });
       }
     } catch (e) {
       console.error(e);
       toast.dismiss(toastId);
-      toast.error("Errore nella generazione dell'immagine", { description: String(e) });
+      toast.error("Errore nella generazione del PDF", { description: String(e) });
     }
   };
 
@@ -168,7 +168,7 @@ function App() {
               {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
 
-            {/* Update checker + Scarica Immagine */}
+            {/* Update checker + Scarica PDF */}
             <div className="flex items-center gap-3">
               <UpdateChecker isTauri={isTauri} />
               <button
@@ -177,7 +177,7 @@ function App() {
                 className="flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors"
                 style={{ background: "#C2942E" }}
               >
-                <Download className="h-4 w-4" /> Scarica Immagine
+                <Download className="h-4 w-4" /> Scarica PDF
               </button>
             </div>
           </div>
