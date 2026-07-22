@@ -57,7 +57,7 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
   text(doc, p.accent);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
-  doc.text(mirror ? "POLIZZA B" : "POLIZZA A", alignX, 15, { align, charSpace: 1.2 });
+  doc.text(mirror ? "POLIZZA B" : "POLIZZA A", mirror ? alignX - 3.5 : alignX, 15, { align, charSpace: 1.2 });
   // nome polizza
   text(doc, p.headerText);
   doc.setFont("helvetica", "bold");
@@ -75,7 +75,7 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
     text(doc, p.header);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8.5);
-    doc.text(label, alignX, y, { align, charSpace: 1 });
+    doc.text(label, mirror ? alignX - 2.5 : alignX, y, { align, charSpace: 1 });
     stroke(doc, p.accent);
     doc.setLineWidth(0.4);
     doc.line(innerX, y + 2, innerX + innerW, y + 2);
