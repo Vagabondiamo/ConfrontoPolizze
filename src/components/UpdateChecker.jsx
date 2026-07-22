@@ -49,17 +49,17 @@ export function UpdateChecker() {
             downloaded: (p?.downloaded ?? 0) + event.data.chunkLength,
             total: p?.total ?? 0,
           }));
-        } else if (event.event === "Finished") {
-          setDone(true);
         }
       });
+      setDone(true);
     } catch (e) {
       console.error("Update failed:", e);
-      toast.error("Errore durante l'aggiornamento", {
-        description: String(e),
-      });
+      setDone(false);
       setInstalling(false);
       setProgress(null);
+      toast.error("Errore durante l'installazione", {
+        description: "Impossibile completare l'installazione automatica. Scarica l'ultima versione dal sito web.",
+      });
     }
   }, [update]);
 
