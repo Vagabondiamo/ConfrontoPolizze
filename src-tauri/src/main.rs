@@ -2,5 +2,13 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
+  // Fix WebKit rendering issues when launching from the desktop on Linux
+  // (no-op on Windows and macOS)
+  #[cfg(target_os = "linux")]
+  {
+    std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+    std::env::set_var("WEBKIT_DISABLE_COMPOSITING_MODE", "1");
+  }
+
   app_lib::run();
 }
