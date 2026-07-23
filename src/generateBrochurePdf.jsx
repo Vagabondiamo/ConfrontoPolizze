@@ -63,11 +63,11 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(15);
   const nameLines = doc.splitTextToSize(p.name, innerW);
-  doc.text(nameLines, alignX, 24, { align });
+  doc.text(nameLines, innerX, 24, { align: "left" });
   // compagnia
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
-  doc.text(p.company, alignX, 24 + nameLines.length * 5.6 + 2, { align });
+  doc.text(p.company, innerX, 24 + nameLines.length * 5.6 + 2, { align: "left" });
 
   let y = 58;
 
@@ -76,7 +76,8 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
     text(doc, p.header);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8.5);
-    doc.text(label, alignX, y, { align, charSpace: 1 });
+    const labelCS = 1.0;
+    doc.text(label, innerX, y, { align: "left", charSpace: labelCS });
     stroke(doc, p.accent);
     doc.setLineWidth(0.4);
     doc.line(innerX, y + 2, innerX + innerW, y + 2);
@@ -92,11 +93,12 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
   p.coverages.forEach((c) => {
     const tw = innerW - 6;
     const lines = doc.splitTextToSize(c, tw);
-    const bx = mirror ? x0 + w - pad - 4 : innerX;
+    const bx = innerX;
     fill(doc, p.accent);
     doc.rect(bx, y - 3, 3, 3, "F");
-    const txX = mirror ? bx - 2 : bx + 5;
-    doc.text(lines, txX, y, { align, maxWidth: tw });
+    const txX = bx + 5;
+    text(doc, colors.bodyText);
+    doc.text(lines, txX, y, { align: "left", maxWidth: tw });
     y += lines.length * 3.8 + 2;
   });
 
@@ -124,21 +126,21 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
     text(doc, p.header);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
-    doc.text("DETTAGLI", mirror ? innerX + innerW - 4 : innerX + 4, startY + 5.5, { align });
+    const detLabel = "DETTAGLI";
+    doc.text(detLabel, innerX + 4, startY + 5.5, { align: "left" });
 
     let yy = startY + 11;
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(7.5);
     details.forEach((d) => {
       text(doc, p.header);
       doc.setFont("helvetica", "bold");
-      const labelX = mirror ? innerX + innerW - 4 : innerX + 4;
-      doc.text(d.l, labelX, yy, { align });
+      doc.setFontSize(7.5);
+      const labelX = innerX + 4;
+      doc.text(d.l, labelX, yy, { align: "left" });
       
       text(doc, colors.bodyText);
       doc.setFont("helvetica", "normal");
-      const valX = mirror ? innerX + 4 : innerX + innerW - 4;
-      doc.text(d.v, valX, yy, { align: mirror ? "left" : "right" });
+      const valX = innerX + innerW - 4;
+      doc.text(d.v, valX, yy, { align: "right" });
       yy += 5;
     });
     y = startY + h + 4;
@@ -161,18 +163,19 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
     text(doc, p.header);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
-    doc.text("ESCLUSIONI", mirror ? innerX + innerW - 4 : innerX + 4, startY + 5.5, { align });
+    const exclLabel = "ESCLUSIONI";
+    doc.text(exclLabel, innerX + 4, startY + 5.5, { align: "left" });
 
     let yy = startY + 10.5;
     wrapped.forEach((ln) => {
-      const mx = mirror ? innerX + innerW - 4 : innerX + 4;
+      const mx = innerX + 4;
       fill(doc, colors.dot);
-      doc.circle(mirror ? mx - 1.5 : mx + 1, yy - 1.2, 1.1, "F");
-      const txX = mirror ? mx - 5 : mx + 5;
+      doc.circle(mx + 1, yy - 1.2, 1.1, "F");
+      const txX = mx + 5;
       text(doc, colors.bodyText);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
-      doc.text(ln, txX, yy, { align });
+      doc.text(ln, txX, yy, { align: "left" });
       yy += ln.length * 3.8 + 1.8;
     });
     y = startY + h + 4;
@@ -188,25 +191,28 @@ function drawPolicyPanel(doc, x0, w, p, colors, opts) {
     
     doc.setFillColor(239, 246, 255);
     doc.setDrawColor(147, 197, 253);
-    doc.setLineWidth(0.3);
+    doc.setLineWidth(0.25);
     doc.roundedRect(innerX, startY, innerW, h, 1.2, 1.2, "FD");
+    doc.setFillColor(59, 130, 246);
+    doc.rect(innerX, startY, 2, h, "F");
     doc.setLineWidth(0.2);
 
     doc.setTextColor(30, 64, 175);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
-    doc.text("NOTE", mirror ? innerX + innerW - 4 : innerX + 4, startY + 5.5, { align });
+    const noteLabel = "NOTE";
+    doc.text(noteLabel, innerX + 4, startY + 5.5, { align: "left" });
 
     let yy = startY + 10.5;
     wrapped.forEach((ln) => {
-      const mx = mirror ? innerX + innerW - 4 : innerX + 4;
+      const mx = innerX + 4;
       doc.setFillColor(59, 130, 246);
-      doc.circle(mirror ? mx - 1.5 : mx + 1, yy - 1.2, 1.1, "F");
-      const txX = mirror ? mx - 5 : mx + 5;
+      doc.circle(mx + 1, yy - 1.2, 1.1, "F");
+      const txX = mx + 5;
       doc.setTextColor(30, 64, 175);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
-      doc.text(ln, txX, yy, { align });
+      doc.text(ln, txX, yy, { align: "left" });
       yy += ln.length * 3.8 + 1.8;
     });
     y = startY + h + 4;
@@ -354,6 +360,47 @@ export function generateBrochurePdf(rawData, { download = true } = {}) {
   doc.line(panelW, 0, panelW, 210);
   doc.line(panelW * 2, 0, panelW * 2, 210);
   doc.setLineDashPattern([], 0);
+
+  // --- FACCIA POSTERIORE (PAGINA 2) ---
+  doc.addPage();
+  const pageW = 297;
+  const pageH = 210;
+  
+  // Sfondo
+  fill(doc, colors.center.bg);
+  doc.rect(0, 0, pageW, pageH, "F");
+
+  // Logo al centro
+  const centerX = pageW / 2;
+  const centerY = pageH / 2;
+  
+  if (data.center.logo) {
+    try {
+      const fmt = data.center.logo.includes("image/png") ? "PNG" : "JPEG";
+      const lw = 80;
+      const lh = 35;
+      doc.addImage(data.center.logo, fmt, centerX - lw / 2, centerY - lh / 2, lw, lh, undefined, "FAST");
+    } catch (e) {
+      // Ignore
+    }
+  } else {
+    text(doc, colors.center.text);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(36);
+    doc.text("FUTURIA", centerX, centerY, { align: "center", charSpace: 5 });
+    text(doc, colors.center.accent);
+    doc.setFontSize(12);
+    doc.text("ASSICURAZIONI", centerX, centerY + 10, { align: "center", charSpace: 3 });
+  }
+
+  // Slogan
+  if (data.center.slogan) {
+    text(doc, colors.center.accent);
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(14);
+    const sl = doc.splitTextToSize('"' + data.center.slogan + '"', pageW - 40);
+    doc.text(sl, centerX, centerY + 35, { align: "center" });
+  }
 
   if (download) {
     doc.save("brochure-futuria.pdf");

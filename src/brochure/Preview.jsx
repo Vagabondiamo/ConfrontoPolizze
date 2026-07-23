@@ -24,14 +24,14 @@ const PolicyPanel = ({ p, colors, panel, mirror, tag }) => {
       <div className="flex-1 space-y-[2.5%] px-[5%] py-[4%] overflow-y-auto scrollbar-thin" style={{ scrollbarWidth: "none" }}>
         {/* COPERTURE */}
         <div>
-          <div className={`text-[6.5px] font-bold tracking-[0.12em] ${align}`} style={{ color: panel.header, borderBottom: `1px solid ${panel.accent}`, paddingBottom: 2 }}>
+          <div className="text-[6.5px] font-bold tracking-[0.12em] text-left" style={{ color: panel.header, borderBottom: `1px solid ${panel.accent}`, paddingBottom: 2 }}>
             COPERTURE
           </div>
           <ul className="mt-[3%] space-y-[2%]">
             {p.coverages.map((c, i) => (
-              <li key={i} className={`flex items-start gap-1.5 ${flexDir}`} style={{ fontSize: "clamp(4.5px,0.72vw,7.8px)" }}>
+              <li key={i} className="flex items-start gap-1.5 flex-row" style={{ fontSize: "clamp(4.5px,0.72vw,7.8px)" }}>
                 <span className="inline-block shrink-0" style={{ width: 4.5, height: 4.5, background: panel.accent, marginTop: "0.35em" }} />
-                <span className={mirror ? "text-right" : "text-left"}>{c}</span>
+                <span className="text-left">{c}</span>
               </li>
             ))}
           </ul>
@@ -39,34 +39,34 @@ const PolicyPanel = ({ p, colors, panel, mirror, tag }) => {
 
         {/* DETTAGLI */}
         <div className="rounded-sm p-[3.5%]" style={{ background: colors.boxBg, border: `1px solid ${colors.boxBorder}` }}>
-          <div className={`text-[6.5px] font-bold ${align}`} style={{ color: panel.header }}>DETTAGLI</div>
+          <div className="text-[6.5px] font-bold text-left" style={{ color: panel.header }}>DETTAGLI</div>
           <div className="mt-[2%] space-y-[2.5%] text-left" style={{ fontSize: "clamp(4.5px,0.7vw,7.5px)" }}>
             {p.capitaleDesc && (
-              <div className={`flex justify-between ${flexDir}`}>
+              <div className="flex justify-between flex-row">
                 <span className="font-semibold">Capitale:</span>
                 <span>{p.capitaleDesc} {p.capitaleMin ? `(min: ${p.capitaleMin}€)` : ""}</span>
               </div>
             )}
             {p.durataDesc && (
-              <div className={`flex justify-between ${flexDir}`}>
+              <div className="flex justify-between flex-row">
                 <span className="font-semibold">Durata:</span>
                 <span>{p.durataDesc} {p.durataMax ? `(max: ${p.durataMax}a)` : ""}</span>
               </div>
             )}
             {p.fiscalita && (
-              <div className={`flex justify-between ${flexDir}`}>
+              <div className="flex justify-between flex-row">
                 <span className="font-semibold">Fiscalità:</span>
                 <span>{p.fiscalita}</span>
               </div>
             )}
             {p.recesso && (
-              <div className={`flex justify-between ${flexDir}`}>
+              <div className="flex justify-between flex-row">
                 <span className="font-semibold">Recesso:</span>
                 <span>{p.recesso}</span>
               </div>
             )}
             {p.riscatto && (
-              <div className={`flex justify-between ${flexDir}`}>
+              <div className="flex justify-between flex-row">
                 <span className="font-semibold">Riscatto:</span>
                 <span>{p.riscatto}</span>
               </div>
@@ -76,12 +76,12 @@ const PolicyPanel = ({ p, colors, panel, mirror, tag }) => {
 
         {/* ESCLUSIONI */}
         <div className="rounded-sm p-[3.5%]" style={{ background: colors.boxBg, border: `1px solid ${colors.boxBorder}` }}>
-          <div className={`text-[6.5px] font-bold ${align}`} style={{ color: panel.header }}>ESCLUSIONI</div>
+          <div className="text-[6.5px] font-bold text-left" style={{ color: panel.header }}>ESCLUSIONI</div>
           <ul className="mt-[2%] space-y-[2%]">
             {p.exclusions.map((x, i) => (
-              <li key={i} className={`flex items-start gap-1.5 ${flexDir}`} style={{ fontSize: "clamp(4.5px,0.7vw,7.5px)" }}>
+              <li key={i} className="flex items-start gap-1.5 flex-row" style={{ fontSize: "clamp(4.5px,0.7vw,7.5px)" }}>
                 <span className="inline-block shrink-0 rounded-full" style={{ width: 4.5, height: 4.5, background: colors.dot, marginTop: "0.35em" }} />
-                <span className={mirror ? "text-right" : "text-left"}>{x}</span>
+                <span className="text-left">{x}</span>
               </li>
             ))}
           </ul>
@@ -90,12 +90,12 @@ const PolicyPanel = ({ p, colors, panel, mirror, tag }) => {
         {/* DATI MANCANTI / DA VERIFICARE */}
         {p.note && p.note.filter(x => x && x.trim()).length > 0 && (
           <div className="rounded-sm p-[3.5%] border-l-2 border-blue-400 bg-blue-50/50">
-            <div className={`text-[6.5px] font-bold text-blue-700 ${align}`}>NOTE</div>
+            <div className="text-[6.5px] font-bold text-blue-700 text-left">NOTE</div>
             <ul className="mt-[2%] space-y-[2%]">
               {p.note.map((d, i) => (
-                <li key={i} className={`flex items-start gap-1.5 ${flexDir}`} style={{ fontSize: "clamp(4.5px,0.7vw,7.5px)", color: "#1e40af" }}>
+                <li key={i} className="flex items-start gap-1.5 flex-row" style={{ fontSize: "clamp(4.5px,0.7vw,7.5px)", color: "#1e40af" }}>
                   <span className="inline-block shrink-0 rounded-full bg-blue-500" style={{ width: 4.5, height: 4.5, marginTop: "0.35em" }} />
-                  <span className={mirror ? "text-right" : "text-left"}>{d}</span>
+                  <span className="text-left">{d}</span>
                 </li>
               ))}
             </ul>
@@ -171,9 +171,35 @@ const CenterPanel = ({ c, colors }) => {
   );
 };
 
-export const Preview = ({ data }) => {
+export const Preview = ({ data, face = "front" }) => {
   const d = resolveData(data);
   const colors = getTheme(d.themeId);
+  
+  if (face === "back") {
+    return (
+      <div
+        className="mx-auto w-full overflow-hidden shadow-2xl ring-1 ring-black/10 flex flex-col items-center justify-center relative"
+        style={{ aspectRatio: "297 / 210", background: colors.center.bg, color: colors.center.text }}
+      >
+        <div className="text-center w-full px-[10%]">
+          {d.center.logo ? (
+            <img src={d.center.logo} alt="logo" className="mx-auto max-h-[160px] object-contain" />
+          ) : (
+            <div>
+              <div className="font-extrabold tracking-[0.14em]" style={{ fontSize: "clamp(30px,5vw,70px)", color: colors.center.text }}>FUTURIA</div>
+              <div className="tracking-[0.28em]" style={{ fontSize: "clamp(10px,1.5vw,20px)", color: colors.center.accent }}>ASSICURAZIONI</div>
+            </div>
+          )}
+          {d.center.slogan && (
+            <div className="mt-[8%] text-center italic" style={{ fontSize: "clamp(14px,2.5vw,28px)", color: colors.center.accent }}>
+              "{d.center.slogan}"
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       data-testid="brochure-preview"

@@ -219,11 +219,19 @@ function App() {
 
           <div className={`rounded-xl border p-4 shadow-sm sm:p-8 ${darkMode ? "border-neutral-700 bg-neutral-800/60" : "border-neutral-200 bg-neutral-200/60"}`}>
             <div className="mb-3 flex items-center justify-between text-xs font-medium text-neutral-500">
-              <span>Anteprima · A4 orizzontale (297 × 210 mm)</span>
+              <span>Anteprima Interno · A4 (297 × 210 mm)</span>
               <span className="hidden sm:inline">Pannelli: A · Futuria · B</span>
             </div>
-            <div ref={previewRef} id="brochure-preview">
-              <Preview data={data} />
+            <div ref={previewRef} id="brochure-preview" className="mb-8">
+              <Preview data={data} face="front" />
+            </div>
+
+            <div className="mb-3 flex items-center justify-between text-xs font-medium text-neutral-500">
+              <span>Anteprima Esterno · A4 (297 × 210 mm)</span>
+              <span className="hidden sm:inline">Faccia Posteriore</span>
+            </div>
+            <div id="brochure-preview-back">
+              <Preview data={data} face="back" />
             </div>
           </div>
         </section>

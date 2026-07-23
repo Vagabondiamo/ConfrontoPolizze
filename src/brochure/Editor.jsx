@@ -7,58 +7,7 @@ import { Plus, Trash2, Upload, X } from "lucide-react";
 import { EXAMPLE } from "./defaults";
 import { NewProductModal } from "./NewProductModal";
 
-const DEFAULT_PRODUCTS = [
-  {
-    name: "TCM Futuria Protezione",
-    company: "Futuria Assicurazioni",
-    docType: "DIP Vita",
-    capitaleDesc: "Minimo 250.000 €",
-    capitaleMin: "250000",
-    durataDesc: "Da 1 a 25 anni",
-    durataMax: "25",
-    fiscalita: "Detraibile al 19%",
-    recesso: "Entro 30 giorni",
-    riscatto: "Non consentito nei primi 3 anni",
-    coverages: [
-      "Capitale caso morte fino a 300.000 €",
-      "Copertura infortuni h24",
-      "Invalidità permanente da malattia",
-    ],
-    exclusions: [
-      "Sport estremi non dichiarati",
-      "Dolo dell'assicurato",
-    ],
-    note: [
-      "Questionario anamnestico da firmare",
-    ],
-  },
-  {
-    name: "Sicura Vita Premium",
-    company: "Beta Insurance Group",
-    docType: "Scheda Prodotto",
-    capitaleDesc: "Massimo 250.000 €",
-    capitaleMin: "200000",
-    durataDesc: "Da 1 a 20 anni",
-    durataMax: "20",
-    fiscalita: "Esenzione tasse di successione",
-    recesso: "Entro 30 giorni",
-    riscatto: "Consentito dopo 1 anno",
-    coverages: [
-      "Capitale caso morte fino a 250.000 €",
-      "Anticipo in caso di malattia grave",
-      "Copertura mutuo residuo",
-      "Assistenza familiare inclusa",
-    ],
-    exclusions: [
-      "Patologie preesistenti non dichiarate",
-      "Eventi bellici e nucleari",
-    ],
-    note: [
-      "Copia documento d'identità",
-      "Codice fiscale",
-    ],
-  },
-];
+const DEFAULT_PRODUCTS = [];
 
 const Field = ({ label, children }) => (
   <div className="space-y-1.5">
